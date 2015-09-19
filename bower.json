@@ -1,0 +1,22 @@
+{
+  "name": "test-node",
+  "version": "1.0.0",
+  "description": "testing node",
+  "main": "bin/www",
+  "moduleType": [
+    "globals",
+    "node",
+    "yui"
+  ],
+  "authors": [
+    "Jovino"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

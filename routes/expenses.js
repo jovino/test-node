@@ -7,7 +7,12 @@ var expensesDb = nano.db.use('expenses');
 router.get('/expenses', function(req, res, next) {
 
   expensesDb.view('expenses','byName', function(err, body){
-    res.send(body.rows);
+    var responseRows = [];
+    for(var i=0; i<body.rows.length;i++)
+    {
+      responseRows.push( body.rows[i].value);
+    }
+    res.send(responseRows);
   }
 );
 });

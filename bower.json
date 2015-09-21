@@ -21,9 +21,11 @@
   ],
   "dependencies": {
     "angular": "~1.4.6",
+    "angular-bootstrap": "~0.13.4",
     "angular-material": "~0.11.0",
     "angular-object-table": "~0.1.9",
     "angular-smart-table": "~2.1.3",
+    "angular-ui-tree": "~2.9.0",
     "angular-xeditable": "~0.1.9",
     "font-awesome": "fontawesome#~4.4.0"
   }

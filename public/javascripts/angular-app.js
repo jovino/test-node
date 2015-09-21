@@ -1,5 +1,5 @@
 
-var app=angular.module('myApp', ['ngMaterial','xeditable','smart-table']);
+var app=angular.module('myApp', ['ngMaterial','xeditable','smart-table','ui.bootstrap']);
 app.run(function(editableOptions) {
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
@@ -20,22 +20,54 @@ app.config(function($mdThemingProvider, $mdIconProvider){
               app.constant('appSettings', {
                   db: 'http://127.0.0.1:5984/expenses'
                 });
-              app.controller('sortCtrl', ['appSettings','$scope', '$http', '$filter',
-               function (appSettings,$scope,$http, filter) {
+              app.controller('sortCtrl',
+               ['appSettings','$scope', '$http', '$filter',
+               function (appSettings,$scope,$http, filter ) {
+                 var originatorEv;
+        
                   $scope.itemsByPage=2;
+                  $scope.lastIndex = -1;
+               $scope.removeRow = function(row)
+               {
+                 var index = $scope.rowCollection.indexOf(row);
+                 if (index > -1) {
+                      $scope.modifiedRows.push($scope.rowCollection.splice(index, 1));
+                 }
 
-
+               }
+               $scope.addRow = function()
+               {
+                 var newRow ={
+                   "index": $scope.lastIndex++,
+                   "name": "",
+                   "price": 0,
+                   date: ""
+                  };
+                  $scope.rowCollection.push(newRow);
+                  $scope.modifiedRows.push(angular.copy(newRow));
+               }
+               $scope.open = function()
+               {
+                  console.log('open');
+               }
                 function getItems () {
                   $http.get('/api/expenses')
                     .success(function (data) {
-$scope.rowCollection = [];
-                      for(var i=0; i<data.length;i++)
-                        $scope.rowCollection.push( data[i].value);
-                        //copy the references (you could clone ie angular.copy but then have to go through a dirty checking for the matches)
-                           $scope.displayedCollection = [].concat($scope.rowCollection);
 
-                    });
-                }
+                          data.forEach(function(element){
+                            element.Id = $scope.lastIndex++;
+
+                          });
+                          $scope.rowCollection = data;
+                          $scope.displayedCollection = [].concat($scope.rowCollection);
+                          $scope.originalRows = angular.copy(data);
+                          $scope.modifiedRows = [];
+                      });
+                        //copy the references (you could clone ie angular.copy but then have to go through a dirty checking for the matches)
+
+
+                    };
+
                 getItems();
 
 

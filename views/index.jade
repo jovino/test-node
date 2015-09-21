@@ -1,40 +1,51 @@
 extends layout
 
 block content
-  md-toolbar(layout='row' class='md-default-theme')
-      .md-toolbar-tools
-        md-button.menu( ng-click='ul.toggleList()', aria-label='Show User List')
-          md-icon(md-svg-icon='menu')
-          
-        h1 Mireia, Welcome to #{title}
-  md-whiteframe.md-whiteframe-z1(ng-controller='sortCtrl')
-      table.table.table-striped(st-table='displayedCollection', st-safe-src='rowCollection')
-        thead
-          tr
-            th(st-sort='name') first name
-            th(st-sort='price') price
-            //th(st-sort='date') birth date
-            th
-        tbody
-          tr(ng-repeat='row in displayedCollection')              
-              td
-                span(editable-text='row.name', ng-click='filaform.$show()', e-name='name', e-form='filaform', e-required='')
-                  {{row.name | uppercase}}
-              td 
-                span(editable-text='row.price', e-name='price', e-form='filaform', e-required='')
-                  {{row.price}}
-              //  td span(editable-date='row.date', e-name='date', e-form='filaform', e-required='') {row.date | date}}          
+  div( ng-controller='sortCtrl')
+    md-toolbar(layout='row' class='md-default-theme md-primary')
+        .md-toolbar-tools
+          h3 Products
+          md-menu( ng-click='ul.toggleList()', aria-label='Show User List')
+            md-icon(md-svg-icon='menu', md-menu-origin, ng-click="$mdOpenMenu()")
+            md-menu-content(width='3')
+              md-menu-item
+                md-button
+                  i.fa.fa-cloud(md-menu-align-target='') &nbsp; Save
+              md-menu-item
+                md-button
+                  i.fa.fa-undo(md-menu-align-target='') &nbsp; Revert
+                  
 
-              td(style="width:100px;")
-                .buttons(ng-show='!filaform.$visible')
-                  i.fa.fa-pencil.fa-2x(ng-click='filaform.$show()') &nbsp;
-                  i.fa.fa-trash-o.fa-2x(ng-click='removeUser($index)') &nbsp;
-                .buttons(ng-show='filaform.$visible')
-                  form.form-buttons.form-inline(editable-form='', blur="submit"  name='filaform', onbeforesave='saveUser($data, user.id)', ng-show='filaform.$visible', shown='inserted == row')
-                    i.fa.fa-floppy-o.fa-2x(type='submit', ng-disabled='filaform.$waiting', ng-click='filaform.submit()') &nbsp;
-                    i.fa.fa-ban.fa-2x(type='button', ng-disabled='filaform.$waiting', ng-click='filaform.$cancel()') &nbsp;         
+    
+    md-whiteframe.md-whiteframe-z1()
+        table.table.table-striped(st-table='displayedCollection', st-safe-src='rowCollection')
+          thead
+            tr
+              th(st-sort='name') Name
+              th(st-sort='price') Price
+              th(st-sort='datecad') Date
+              th
+          tbody
+            tr(ng-repeat='row in displayedCollection')              
+                td
+                  span(editable-text='row.name', ng-click='filaform.$show()', e-name='name', e-form='filaform', e-required='')
+                    {{row.name | uppercase}}
+                td 
+                  span(editable-number='row.price', step="3" e-name='price', e-form='filaform', e-required='')
+                    {{row.price}}
+                td 
+                  span(editable-bsdate='row.datecad', e-ng-click="opened=true",e-datepicker-append-to-body='true', e-is-open='opened', e-init-date='01-01-2001', e-datepicker-popup="dd-MMMM-yyyy", e-templateUrl='/vacio', e-name='datecad', e-form='filaform', e-required='') 
+                    {{row.datecad | date}}
+                td(style='width:100px;')
+                  .buttons(ng-show='!filaform.$visible')
+                    i.fa.fa-pencil.fa-2x(ng-click='filaform.$show()') &nbsp;
+                    i.fa.fa-trash-o.fa-2x(ng-click='removeRow(row)') &nbsp;
+                  .buttons(ng-show='filaform.$visible')
+                    form.form-buttons.form-inline(editable-form='', name='filaform', onbeforesave='saveUser($data, user.id)', ng-show='filaform.$visible', shown='inserted == row')
+                      button.fa.fa-floppy-o.fa-2x(type='submit', ng-disabled='filaform.$waiting', style="background:none;border:none;") &nbsp;
+                      i.fa.fa-ban.fa-2x(type='button', ng-disabled='filaform.$waiting', ng-click='filaform.$cancel()') &nbsp;         
 
-        tfoot
-          tr
-            td.text-center(colspan='5')
-              div(st-pagination='', st-items-by-page='3', st-displayed-pages='3')
+          tfoot
+            tr
+              td.text-center(colspan='5')
+                div(st-pagination='', st-items-by-page='3', st-displayed-pages='3')

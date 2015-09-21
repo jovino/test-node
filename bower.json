@@ -18,5 +18,13 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "angular": "~1.4.6",
+    "angular-material": "~0.11.0",
+    "angular-object-table": "~0.1.9",
+    "angular-smart-table": "~2.1.3",
+    "angular-xeditable": "~0.1.9",
+    "font-awesome": "fontawesome#~4.4.0"
+  }
 }
